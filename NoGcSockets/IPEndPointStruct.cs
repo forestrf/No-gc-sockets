@@ -75,6 +75,15 @@ namespace NoGcSockets {
 				ipv6.Equals(other.Address));
 		}
 
+		public override int GetHashCode() {
+			if (AddressFamily.InterNetwork == addressFamily) {
+				return port << 16 ^ ipv4.GetHashCode();
+			}
+			else {
+				return port << 16 ^ ipv6.GetHashCode();
+			}
+		}
+
 		public override string ToString() {
 			if (AddressFamily.InterNetwork == addressFamily) {
 				return ipv4.ToString() + ":" + port;

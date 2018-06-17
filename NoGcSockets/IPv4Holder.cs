@@ -1,6 +1,7 @@
 ﻿using BBuffer;
 using System;
 using System.Net;
+using System.Net.Sockets;
 using System.Text;
 
 namespace NoGcSockets {
@@ -20,7 +21,7 @@ namespace NoGcSockets {
 			}
 		}
 		public IPv4Holder(SocketAddress socketAddress) {
-			if (System.Net.Sockets.AddressFamily.InterNetwork != socketAddress.Family) throw new Exception();
+			if (AddressFamily.InterNetwork != socketAddress.Family) throw new Exception();
 			bits =
 				((uint) socketAddress[4] << 24) |
 				((uint) socketAddress[5] << 16) |
@@ -61,6 +62,10 @@ namespace NoGcSockets {
 			set {
 				bits = (bits & (~(0xffu << ((3 - i) * 8)))) | ((uint) value << ((3 - i) * 8));
 			}
+		}
+
+		public override int GetHashCode() {
+			return (int) bits;
 		}
 
 		public override string ToString() {

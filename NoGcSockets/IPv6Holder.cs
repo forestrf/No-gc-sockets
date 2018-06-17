@@ -32,7 +32,7 @@ namespace NoGcSockets {
 			lsb = buffer.GetULong();
 		}
 		public IPv6Holder(SocketAddress socketAddress) {
-			if (System.Net.Sockets.AddressFamily.InterNetworkV6 != socketAddress.Family) throw new Exception();
+			if (AddressFamily.InterNetworkV6 != socketAddress.Family) throw new Exception();
 			msb =
 				((ulong) socketAddress[8] << 56) |
 				((ulong) socketAddress[9] << 48) |
@@ -99,6 +99,11 @@ namespace NoGcSockets {
 					lsb = (lsb & (~(0xfful << ((7 - i - 8) * 8)))) | ((ulong) value << ((7 - i - 8) * 8));
 				}
 			}
+		}
+
+		public override int GetHashCode() {
+			var xor = msb ^ lsb;
+			return (int) ((uint) (xor >> 32) ^ (uint) (0xffffffffu & xor));
 		}
 
 		public override string ToString() {
