@@ -7,6 +7,11 @@ This functions do not use try catch, it is your job to continue using them as be
 
 You will need to start using IPEndPointStruct instead of IPEndPoint.
 
+| Function | Before | After |
+| ------ | ---- | --- |
+| SendTo | 80 B | 0 B |
+| ReceiveFrom | 250 B | 82 B |
+
 ## How to use
 
 There is a working version made in this [unit test](https://github.com/forestrf/No-gc-sockets/blob/master/NoGcSockets.Tests/FullTest.cs).
