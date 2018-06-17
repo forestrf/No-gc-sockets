@@ -1,13 +1,19 @@
 ﻿using BBuffer;
 using System;
+using System.Globalization;
 using System.Net;
+using System.Net.Sockets;
 using System.Reflection;
+using System.Text;
 
 namespace NoGcSockets {
 	public struct IPv6Holder : IEquatable<IPv6Holder>, IEquatable<SocketAddress>, IEquatable<IPAddress> {
 		private static FieldInfo field = typeof(IPAddress).GetField("m_Numbers", BindingFlags.NonPublic | BindingFlags.Instance);
 
-		internal ulong msb, lsb;
+		/// <summary>
+		/// Holds the bytes that represent the ip
+		/// </summary>
+		public ulong msb, lsb;
 
 		public const int Length = 16;
 
@@ -93,6 +99,39 @@ namespace NoGcSockets {
 					lsb = (lsb & (~(0xfful << ((7 - i - 8) * 8)))) | ((ulong) value << ((7 - i - 8) * 8));
 				}
 			}
+		}
+
+		public override string ToString() {
+			int capacity = 256;
+			StringBuilder stringBuilder = new StringBuilder(capacity);
+			stringBuilder.Append('[');
+
+			int timesClean = 0;
+			for (int i = 0; i < 8; i++) {
+				if (0 != this[i * 2]) {
+					stringBuilder.Append(this[i * 2].ToString("x2", CultureInfo.InvariantCulture));
+					stringBuilder.Append(this[i * 2 + 1].ToString("x2", CultureInfo.InvariantCulture));
+					timesClean = 0;
+				}
+				else if (0 != this[i * 2 + 1]) {
+					stringBuilder.Append(this[i * 2 + 1].ToString("x2", CultureInfo.InvariantCulture));
+					timesClean = 0;
+				}
+				else {
+					timesClean++;
+				}
+				if (timesClean < 2 && i != 7) {
+					stringBuilder.Append(':');
+				}
+			}
+			
+			/*
+			if (this.m_ScopeId != 0L) {
+				stringBuilder.Append('%').Append((uint) this.m_ScopeId);
+			}
+			*/
+			stringBuilder.Append(']');
+			return stringBuilder.ToString();
 		}
 	}
 }

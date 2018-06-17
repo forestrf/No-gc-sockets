@@ -1,7 +1,7 @@
 using NUnit.Framework;
 using System.Net;
 
-namespace NoGcSockets {
+namespace NoGcSockets.Tests {
 	[TestFixture]
 	public class IPv6HolderTest {
 		[Test]

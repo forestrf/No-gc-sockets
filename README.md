@@ -28,4 +28,5 @@ int recvBytes = SocketHandler.ReceiveFrom(receiver, bufferRecv, 0, bufferRecv.Le
 // from contains the sender address, recvBytes the number of received bytes
 ```
 
-MIT Licensed.
+This code is licensed under the permissive MIT X11 license. For the full text
+see `LICENSE.txt`.

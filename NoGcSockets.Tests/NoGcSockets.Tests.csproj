@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="FullTest.cs" />
     <Compile Include="IPv4HolderTest.cs" />
+    <Compile Include="IPEndPointStructTest.cs" />
     <Compile Include="IPv6HolderTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

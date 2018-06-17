@@ -1,10 +1,14 @@
 ﻿using BBuffer;
 using System;
 using System.Net;
+using System.Text;
 
 namespace NoGcSockets {
 	public struct IPv4Holder : IEquatable<IPv4Holder>, IEquatable<SocketAddress>, IEquatable<IPAddress> {
-		internal uint bits;
+		/// <summary>
+		/// Holds the bytes that represent the ip
+		/// </summary>
+		public uint bits;
 
 		public const int Length = 4;
 
@@ -57,6 +61,18 @@ namespace NoGcSockets {
 			set {
 				bits = (bits & (~(0xffu << ((3 - i) * 8)))) | ((uint) value << ((3 - i) * 8));
 			}
+		}
+
+		public override string ToString() {
+			StringBuilder stringBuilder = new StringBuilder(15);
+			stringBuilder.Append(this[0]);
+			stringBuilder.Append('.');
+			stringBuilder.Append(this[1]);
+			stringBuilder.Append('.');
+			stringBuilder.Append(this[2]);
+			stringBuilder.Append('.');
+			stringBuilder.Append(this[3]);
+			return stringBuilder.ToString();
 		}
 	}
 }
