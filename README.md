@@ -20,7 +20,7 @@ receiver.Bind(new IPEndPoint(IPAddress.Any, 0));
 
 // Send
 IPEndPointStruct sendTarget = new IPEndPointStruct(new IPv4Holder(IPAddress.Loopback), 0); // Listen locally
-SocketHandler.SendTo(sender, toSend, 0, toSend.Length, SocketFlags.None, ref sendTarget);
+SocketHandler.SendTo(sender, bufferSend, 0, bufferSend.Length, SocketFlags.None, ref sendTarget);
 
 // Receive
 IPEndPointStruct from = new IPEndPointStruct(new IPv4Holder(), 0);
