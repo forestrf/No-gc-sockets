@@ -109,5 +109,13 @@ namespace NoGcSockets {
 		public override int GetHashCode() {
 			return socketAddress.GetHashCode();
 		}
+
+		public static implicit operator IPEndPoint(MutableIPEndPoint v) {
+			return new IPEndPoint(v.Address, v.Port);
+		}
+
+		public static implicit operator IPEndPointStruct(MutableIPEndPoint v) {
+			return new IPEndPointStruct(v);
+		}
 	}
 }

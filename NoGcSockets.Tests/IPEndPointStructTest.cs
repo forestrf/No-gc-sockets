@@ -11,5 +11,16 @@ namespace NoGcSockets.Tests {
 			Assert.AreEqual(new IPEndPoint(ipv4, 123).ToString(), new IPEndPointStruct(ipv4, 123).ToString());
 			Assert.AreEqual(new IPEndPoint(ipv6, 123).ToString(), new IPEndPointStruct(ipv6, 123).ToString());
 		}
+
+		[Test]
+		public void ImplicitCastTest() {
+			var epToCast = new MutableIPEndPoint(IPAddress.Parse("127.0.0.1"), 1234);
+			IPEndPointStruct casted1 = epToCast;
+			IPEndPoint casted2 = epToCast;
+			Assert.AreEqual(new IPv4Holder(epToCast.Address), casted1.ipv4);
+			Assert.AreEqual(epToCast.Address, casted2.Address);
+			Assert.AreEqual(epToCast.Port, casted1.port);
+			Assert.AreEqual(epToCast.Port, casted2.Port);
+		}
 	}
 }
