@@ -92,5 +92,11 @@ namespace NoGcSockets {
 				return ipv6.ToString() + ":" + port;
 			}
 		}
+
+		public static implicit operator IPEndPointStruct(EndPoint v) {
+			if (v is IPEndPoint) return new IPEndPointStruct(((IPEndPoint) v).Address, (ushort) ((IPEndPoint) v).Port);
+			if (v is MutableIPEndPoint) return (MutableIPEndPoint) v;
+			throw new Exception("Cast from " + v.GetType() + " to IPEndPointStruct not allowed");
+		}
 	}
 }
