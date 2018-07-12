@@ -32,22 +32,22 @@ namespace NoGcSockets.Tests {
 
 			
 			// Send
-			IPEndPointStruct sendTarget4 = new IPEndPointStruct(new IPv4Holder(IPAddress.Loopback), (ushort) ((IPEndPoint) receiver4.LocalEndPoint).Port);
+			IPEndPointStruct sendTarget4 = new IPEndPointStruct(new IPHolder(IPAddress.Loopback), (ushort) ((IPEndPoint) receiver4.LocalEndPoint).Port);
 			SocketHandler.SendTo(sender4, toSend, 0, toSend.Length, SocketFlags.None, ref sendTarget4);
 
-			IPEndPointStruct sendTarget6 = new IPEndPointStruct(new IPv6Holder(IPAddress.IPv6Loopback), (ushort) ((IPEndPoint) receiver6.LocalEndPoint).Port);
+			IPEndPointStruct sendTarget6 = new IPEndPointStruct(new IPHolder(IPAddress.IPv6Loopback), (ushort) ((IPEndPoint) receiver6.LocalEndPoint).Port);
 			SocketHandler.SendTo(sender6, toSend, 0, toSend.Length, SocketFlags.None, ref sendTarget6);
 			
 
 			// Receive
-			IPEndPointStruct from4 = new IPEndPointStruct(new IPv4Holder(), 0);
+			IPEndPointStruct from4 = new IPEndPointStruct(new IPHolder(AddressFamily.InterNetwork), 0);
 			int recv4 = SocketHandler.ReceiveFrom(receiver4, receive, 0, receive.Length, SocketFlags.None, ref from4);
 
 			Assert.AreEqual(toSend.Length, recv4);
 			CollectionAssert.AreEqual(toSend, receive);
 
 
-			IPEndPointStruct from6 = new IPEndPointStruct(new IPv6Holder(), 0);
+			IPEndPointStruct from6 = new IPEndPointStruct(new IPHolder(AddressFamily.InterNetworkV6), 0);
 			int recv6 = SocketHandler.ReceiveFrom(receiver6, receive, 0, receive.Length, SocketFlags.None, ref from6);
 
 			Assert.AreEqual(toSend.Length, recv6);

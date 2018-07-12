@@ -1,22 +1,23 @@
 using NUnit.Framework;
 using System.Net;
+using System.Net.Sockets;
 
 namespace NoGcSockets.Tests {
 	[TestFixture]
 	public class IPv6HolderTest {
 		[Test]
 		public void IPv6AndReflection() {
-			Assert.AreEqual(IPAddress.IPv6Any, new IPv6Holder(IPAddress.IPv6Any, false).ToIPAddress());
-			Assert.AreEqual(IPAddress.IPv6Any, new IPv6Holder(IPAddress.IPv6Any, true).ToIPAddress());
-			Assert.AreEqual(IPAddress.IPv6Loopback, new IPv6Holder(IPAddress.IPv6Loopback, false).ToIPAddress());
-			Assert.AreEqual(IPAddress.IPv6Loopback, new IPv6Holder(IPAddress.IPv6Loopback, true).ToIPAddress());
-			Assert.AreEqual(IPAddress.Parse("2001:4860:4801:32::37"), new IPv6Holder(IPAddress.Parse("2001:4860:4801:32::37"), false).ToIPAddress());
-			Assert.AreEqual(IPAddress.Parse("2001:4860:4801:32::37"), new IPv6Holder(IPAddress.Parse("2001:4860:4801:32::37"), true).ToIPAddress());
+			Assert.AreEqual(IPAddress.IPv6Any, new IPHolder(IPAddress.IPv6Any, false).ToIPAddress());
+			Assert.AreEqual(IPAddress.IPv6Any, new IPHolder(IPAddress.IPv6Any, true).ToIPAddress());
+			Assert.AreEqual(IPAddress.IPv6Loopback, new IPHolder(IPAddress.IPv6Loopback, false).ToIPAddress());
+			Assert.AreEqual(IPAddress.IPv6Loopback, new IPHolder(IPAddress.IPv6Loopback, true).ToIPAddress());
+			Assert.AreEqual(IPAddress.Parse("2001:4860:4801:32::37"), new IPHolder(IPAddress.Parse("2001:4860:4801:32::37"), false).ToIPAddress());
+			Assert.AreEqual(IPAddress.Parse("2001:4860:4801:32::37"), new IPHolder(IPAddress.Parse("2001:4860:4801:32::37"), true).ToIPAddress());
 		}
 
 		[Test]
 		public void IPv6ByteAccessing() {
-			IPv6Holder holder = new IPv6Holder();
+			IPHolder holder = new IPHolder(AddressFamily.InterNetworkV6);
 			holder[0] = 0x20;
 			holder[1] = 0x01;
 			holder[2] = 0x48;
@@ -54,7 +55,7 @@ namespace NoGcSockets.Tests {
 
 		[Test]
 		public void IPv6SocketAddressInitializer() {
-			var holder = new IPv6Holder(new IPEndPoint(IPAddress.Parse("2001:4860:4801:32::37"), 12345).Serialize());
+			var holder = new IPHolder(new IPEndPoint(IPAddress.Parse("2001:4860:4801:32::37"), 12345).Serialize());
 			Assert.AreEqual(IPAddress.Parse("2001:4860:4801:32::37"), holder.ToIPAddress());
 		}
 	}

@@ -15,9 +15,9 @@ namespace NoGcSockets.Tests {
 		[Test]
 		public void ImplicitCastTest1() {
 			MutableIPEndPoint epToCast = new MutableIPEndPoint(IPAddress.Parse("127.0.0.1"), 1234);
-			IPEndPointStruct casted1 = epToCast;
+			IPEndPointStruct casted1 = (IPEndPointStruct) epToCast;
 			IPEndPoint casted2 = epToCast;
-			Assert.AreEqual(new IPv4Holder(epToCast.Address), casted1.ipv4);
+			Assert.AreEqual(new IPHolder(epToCast.Address), casted1.ip);
 			Assert.AreEqual(epToCast.Address, casted2.Address);
 			Assert.AreEqual(epToCast.Port, casted1.port);
 			Assert.AreEqual(epToCast.Port, casted2.Port);
@@ -30,8 +30,8 @@ namespace NoGcSockets.Tests {
 			EndPoint epToCast2 = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 1234);
 			IPEndPointStruct casted2 = epToCast2;
 			Assert.AreEqual(casted1, casted2);
-			Assert.AreEqual(casted1.ipv4, new IPv4Holder(((MutableIPEndPoint) epToCast1).Address));
-			Assert.AreEqual(casted2.ipv4, new IPv4Holder(((IPEndPoint) epToCast2).Address));
+			Assert.AreEqual(casted1.ip, new IPHolder(((MutableIPEndPoint) epToCast1).Address));
+			Assert.AreEqual(casted2.ip, new IPHolder(((IPEndPoint) epToCast2).Address));
 			Assert.AreEqual(casted1.port, ((MutableIPEndPoint) epToCast1).Port);
 			Assert.AreEqual(casted2.port, ((IPEndPoint) epToCast2).Port);
 		}

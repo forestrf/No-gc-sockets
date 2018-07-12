@@ -1,96 +1,48 @@
 ﻿using System;
 using System.Net;
-using System.Net.Sockets;
-using System.Runtime.InteropServices;
 
 namespace NoGcSockets {
-	[StructLayout(LayoutKind.Explicit)]
 	public struct IPEndPointStruct : IEquatable<IPEndPointStruct>, IEquatable<IPEndPoint> {
-		[FieldOffset(0)] public readonly ushort port;
-		[FieldOffset(2)] public readonly AddressFamily addressFamily;
-		[FieldOffset(6)] public readonly IPv4Holder ipv4;
-		[FieldOffset(6)] public readonly IPv6Holder ipv6;
+		public readonly ushort port;
+		public readonly IPHolder ip;
 
-		public IPEndPointStruct(IPv4Holder ipv4, ushort port) : this() {
-			addressFamily = AddressFamily.InterNetwork;
-			this.ipv4 = ipv4;
-			this.port = port;
-		}
-
-		public IPEndPointStruct(IPv6Holder ipv6, ushort port) : this() {
-			addressFamily = AddressFamily.InterNetwork;
-			this.ipv6 = ipv6;
+		public IPEndPointStruct(IPHolder ip, ushort port) : this() {
+			this.ip = ip;
 			this.port = port;
 		}
 
 		public IPEndPointStruct(IPAddress address, ushort port) : this() {
 			this.port = port;
-			addressFamily = address.AddressFamily;
-			if (AddressFamily.InterNetwork == addressFamily) {
-				ipv4 = new IPv4Holder(address);
-			}
-			else {
-				ipv6 = new IPv6Holder(address);
-			}
+			ip = new IPHolder(address);
 		}
 
 		internal IPEndPointStruct(MutableIPEndPoint ep) : this() {
 			port = ep.Port;
-			addressFamily = ep.AddressFamily;
-			if (AddressFamily.InterNetwork == addressFamily) {
-				ipv4 = new IPv4Holder(ep.socketAddress);
-			}
-			else {
-				ipv6 = new IPv6Holder(ep.socketAddress);
-			}
+			ip = new IPHolder(ep.socketAddress);
 		}
 
 		public IPAddress GetAddress() {
-			if (AddressFamily.InterNetwork == addressFamily) {
-				return ipv4.ToIPAddress();
-			}
-			else {
-				return ipv6.ToIPAddress();
-			}
+			return ip.ToIPAddress();
 		}
 
 		public bool Equals(IPEndPointStruct other) {
-			return port == other.port && addressFamily == other.addressFamily && (
-				AddressFamily.InterNetwork == addressFamily ?
-				ipv4.Equals(other.ipv4) :
-				ipv6.Equals(other.ipv6));
+			return port == other.port && ip.Equals(other.ip);
 		}
 
 		internal bool Equals(MutableIPEndPoint other) {
-			return port == other.Port && addressFamily == other.AddressFamily && (
-				AddressFamily.InterNetwork == addressFamily ?
-				ipv4.Equals(other.socketAddress) :
-				ipv6.Equals(other.socketAddress));
+			return port == other.Port && ip.Equals(other.socketAddress);
 		}
 
 		public bool Equals(IPEndPoint other) {
-			return port == other.Port && addressFamily == other.AddressFamily && (
-				AddressFamily.InterNetwork == addressFamily ?
-				ipv4.Equals(other.Address) :
-				ipv6.Equals(other.Address));
+			return port == other.Port && ip.Equals(other.Address);
 		}
 
 		public override int GetHashCode() {
-			if (AddressFamily.InterNetwork == addressFamily) {
-				return port << 16 ^ ipv4.GetHashCode();
-			}
-			else {
-				return port << 16 ^ ipv6.GetHashCode();
-			}
+			return port << 16 ^ ip.GetHashCode();
 		}
 
 		public override string ToString() {
-			if (AddressFamily.InterNetwork == addressFamily) {
-				return ipv4.ToString() + ":" + port;
-			}
-			else {
-				return ipv6.ToString() + ":" + port;
-			}
+			return ip.ToString() + ":" + port;
 		}
 
 		public static implicit operator IPEndPointStruct(EndPoint v) {

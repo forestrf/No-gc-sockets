@@ -1,12 +1,13 @@
 using NUnit.Framework;
 using System.Net;
+using System.Net.Sockets;
 
 namespace NoGcSockets.Tests {
 	[TestFixture]
 	public class IPv4HolderTest {
 		[Test]
 		public void IPv4ByteAccessing() {
-			IPv4Holder holder = new IPv4Holder();
+			IPHolder holder = new IPHolder(AddressFamily.InterNetwork);
 			holder[0] = 192;
 			holder[1] = 168;
 			holder[2] = 1;
@@ -20,7 +21,7 @@ namespace NoGcSockets.Tests {
 
 		[Test]
 		public void IPv4SocketAddressInitializer() {
-			var holder = new IPv4Holder(new IPEndPoint(IPAddress.Parse("192.168.1.123"), 12345).Serialize());
+			var holder = new IPHolder(new IPEndPoint(IPAddress.Parse("192.168.1.123"), 12345).Serialize());
 			Assert.AreEqual(IPAddress.Parse("192.168.1.123"), holder.ToIPAddress());
 		}
 	}

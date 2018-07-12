@@ -35,8 +35,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IPEndPointStruct.cs" />
-    <Compile Include="IPv4Holder.cs" />
-    <Compile Include="IPv6Holder.cs" />
+    <Compile Include="IPHolder.cs" />
     <Compile Include="MutableIPEndPoint.cs" />
     <Compile Include="SocketHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -54,50 +54,27 @@ namespace NoGcSockets {
 		/// </summary>
 		public IPAddress Address {
 			get {
-				if (AddressFamily.InterNetwork == socketAddress.Family) {
-					byte[] bytes = new byte[4];
-					for (int i = 0; i < bytes.Length; i++) {
-						bytes[i] = socketAddress[i + 4];
-					}
-					return new IPAddress(bytes);
+				int socketAddressOffset = AddressFamily.InterNetwork == socketAddress.Family ? 4 : 8;
+				byte[] bytes = AddressFamily.InterNetwork == socketAddress.Family ? new byte[4] : new byte[16];
+				for (int i = 0; i < bytes.Length; i++) {
+					bytes[i] = socketAddress[socketAddressOffset + i];
 				}
-				else {
-					byte[] bytes = new byte[16];
-					for (int i = 0; i < bytes.Length; i++) {
-						bytes[i] = socketAddress[i + 8];
-					}
-					return new IPAddress(bytes);
-				}
+				return new IPAddress(bytes);
 			}
 			set {
-				if (AddressFamily.InterNetwork == socketAddress.Family) {
-					var ipv4 = new IPv4Holder(value);
-					
-					for (int i = 0; i < IPv4Holder.Length; i++) {
-						socketAddress[i + 4] = ipv4[i];
-					}
-				}
-				else {
-					var ipv6 = new IPv6Holder(value);
-
-					for (int i = 0; i < IPv6Holder.Length; i++) {
-						socketAddress[i + 8] = ipv6[i];
-					}
+				int socketAddressOffset = AddressFamily.InterNetwork == socketAddress.Family ? 4 : 8;
+				var ip = new IPHolder(value);
+				for (int i = 0; i < ip.Length; i++) {
+					socketAddress[socketAddressOffset + i] = ip[i];
 				}
 			}
 		}
 
 		internal void Set(IPEndPointStruct ipEndPointStruct) {
 			Port = ipEndPointStruct.port;
-			if (AddressFamily.InterNetwork == socketAddress.Family) {
-				for (int i = 0; i < IPv4Holder.Length; i++) {
-					socketAddress[i + 4] = ipEndPointStruct.ipv4[i];
-				}
-			}
-			else {
-				for (int i = 0; i < IPv6Holder.Length; i++) {
-					socketAddress[i + 8] = ipEndPointStruct.ipv6[i];
-				}
+			int socketAddressOffset = AddressFamily.InterNetwork == socketAddress.Family ? 4 : 8;
+			for (int i = 0; i < ipEndPointStruct.ip.Length; i++) {
+				socketAddress[socketAddressOffset + i] = ipEndPointStruct.ip[i];
 			}
 		}
 
