@@ -1,10 +1,17 @@
 ﻿using System;
 using System.Net;
+using System.Net.Sockets;
 
 namespace NoGcSockets {
 	public struct IPEndPointStruct : IEquatable<IPEndPointStruct>, IEquatable<IPEndPoint> {
 		public readonly ushort port;
 		public readonly IPHolder ip;
+
+		public AddressFamily AddressFamily {
+			get {
+				return ip.isIPv4 ? AddressFamily.InterNetwork : AddressFamily.InterNetworkV6;
+			}
+		}
 
 		public IPEndPointStruct(IPHolder ip, ushort port) : this() {
 			this.ip = ip;
