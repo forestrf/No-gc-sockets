@@ -124,11 +124,13 @@ namespace NoGcSockets {
 				buffer.Put(lsb);
 			}
 		}
-		public void Read(ref ByteBuffer buffer) {
+		public void Read(ref ByteBuffer buffer, bool isIPv4) {
 			if (isIPv4) {
+				this = new IPHolder(AddressFamily.InterNetwork);
 				bits = buffer.GetUInt();
 			}
 			else {
+				this = new IPHolder(AddressFamily.InterNetworkV6);
 				msb = buffer.GetULong();
 				lsb = buffer.GetULong();
 			}
