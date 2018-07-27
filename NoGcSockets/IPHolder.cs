@@ -115,6 +115,10 @@ namespace NoGcSockets {
 			}
 		}
 
+		public static implicit operator IPHolder(IPAddress v) {
+			return new IPHolder(v);
+		}
+
 		public void Write(ref ByteBuffer buffer) {
 			if (isIPv4) {
 				buffer.Put(bits);
