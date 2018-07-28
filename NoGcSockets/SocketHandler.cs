@@ -3,10 +3,10 @@ using System.Net;
 using System.Net.Sockets;
 
 namespace NoGcSockets {
-    public static class SocketHandler {
+	public static class SocketHandler {
 		[ThreadStatic] private static MutableIPEndPoint temporalMutableIPEndPointv4;
 		[ThreadStatic] private static MutableIPEndPoint temporalMutableIPEndPointv6;
-		
+
 		public static int SendTo(Socket socket, byte[] buffer, int offset, int size, SocketFlags socketFlags, ref IPEndPointStruct ipEndPointStruct) {
 			EndPoint downCasted;
 
@@ -41,12 +41,12 @@ namespace NoGcSockets {
 				temporalMutableIPEndPointv6.Set(ipEndPointStruct);
 				downCasted = temporalMutableIPEndPointv6;
 			}
-			
+
 			int receivedBytes = socket.ReceiveFrom(buffer, offset, size, socketFlags, ref downCasted);
 
 			ipEndPointStruct = new IPEndPointStruct((MutableIPEndPoint) downCasted);
 
 			return receivedBytes;
 		}
-    }
+	}
 }

@@ -30,14 +30,14 @@ namespace NoGcSockets.Tests {
 			receiver4.Bind(new IPEndPoint(IPAddress.Any, 0));
 			receiver6.Bind(new IPEndPoint(IPAddress.IPv6Any, 0));
 
-			
+
 			// Send
 			IPEndPointStruct sendTarget4 = new IPEndPointStruct(new IPHolder(IPAddress.Loopback), (ushort) ((IPEndPoint) receiver4.LocalEndPoint).Port);
 			SocketHandler.SendTo(sender4, toSend, 0, toSend.Length, SocketFlags.None, ref sendTarget4);
 
 			IPEndPointStruct sendTarget6 = new IPEndPointStruct(new IPHolder(IPAddress.IPv6Loopback), (ushort) ((IPEndPoint) receiver6.LocalEndPoint).Port);
 			SocketHandler.SendTo(sender6, toSend, 0, toSend.Length, SocketFlags.None, ref sendTarget6);
-			
+
 
 			// Receive
 			IPEndPointStruct from4 = new IPEndPointStruct(new IPHolder(AddressFamily.InterNetwork), 0);
