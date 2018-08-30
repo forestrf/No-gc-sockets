@@ -1,0 +1,3 @@
+[submodule "BBuffer"]
+	path = BBuffer
+	url = https://github.com/forestrf/BBuffer.git
