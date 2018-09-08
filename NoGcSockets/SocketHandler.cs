@@ -12,12 +12,12 @@ namespace NoGcSockets {
 
 			if (AddressFamily.InterNetworkV6 == socket.AddressFamily) {
 				if (null == temporalMutableEPv6) temporalMutableEPv6 = new MutableIPEndPoint(socket.AddressFamily);
-				temporalMutableEPv6.Set(ipEndPointStruct);
+				temporalMutableEPv6.Set(ref ipEndPointStruct);
 				downCasted = temporalMutableEPv6;
 			}
 			else {
 				if (null == temporalMutableEPv4) temporalMutableEPv4 = new MutableIPEndPoint(socket.AddressFamily);
-				temporalMutableEPv4.Set(ipEndPointStruct);
+				temporalMutableEPv4.Set(ref ipEndPointStruct);
 				downCasted = temporalMutableEPv4;
 			}
 			return socket.SendTo(buffer, offset, size, socketFlags, downCasted);
@@ -28,18 +28,18 @@ namespace NoGcSockets {
 
 			if (AddressFamily.InterNetworkV6 == socket.AddressFamily) {
 				if (null == temporalMutableEPv6) temporalMutableEPv6 = new MutableIPEndPoint(socket.AddressFamily);
-				temporalMutableEPv6.Set(ipEndPointStruct);
+				temporalMutableEPv6.Set(ref ipEndPointStruct);
 				downCasted = temporalMutableEPv6;
 			}
 			else {
 				if (null == temporalMutableEPv4) temporalMutableEPv4 = new MutableIPEndPoint(socket.AddressFamily);
-				temporalMutableEPv4.Set(ipEndPointStruct);
+				temporalMutableEPv4.Set(ref ipEndPointStruct);
 				downCasted = temporalMutableEPv4;
 			}
 
 			int receivedBytes = socket.ReceiveFrom(buffer, offset, size, socketFlags, ref downCasted);
 
-			ipEndPointStruct = new IPEndPointStruct((MutableIPEndPoint) downCasted);
+			ipEndPointStruct = downCasted;
 
 			return receivedBytes;
 		}

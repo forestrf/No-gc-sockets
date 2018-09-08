@@ -69,7 +69,7 @@ namespace NoGcSockets {
 			}
 		}
 
-		internal void Set(IPEndPointStruct ipEndPointStruct) {
+		internal void Set(ref IPEndPointStruct ipEndPointStruct) {
 			Port = ipEndPointStruct.port;
 			int socketAddressOffset = AddressFamily.InterNetwork == socketAddress.Family ? 4 : 8;
 			for (int i = 0; i < ipEndPointStruct.ip.Length; i++) {
