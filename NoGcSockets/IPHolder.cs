@@ -182,10 +182,10 @@ namespace NoGcSockets {
 				}
 				else {
 					if (i < 8) {
-						return (byte) (0xff & (msb >> ((7 - i - 8) * 8)));
+						return (byte) (msb >> ((7 - i - 8) * 8));
 					}
 					else {
-						return (byte) (0xff & (lsb >> ((7 - i) * 8)));
+						return (byte) (lsb >> ((7 - i) * 8));
 					}
 				}
 			}

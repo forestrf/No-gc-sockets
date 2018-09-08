@@ -1,6 +1,8 @@
 using NUnit.Framework;
+using System;
 using System.Net;
 using System.Net.Sockets;
+using System.Text;
 
 namespace NoGcSockets.Tests {
 	[TestFixture]
@@ -57,6 +59,23 @@ namespace NoGcSockets.Tests {
 		public void IPv6SocketAddressInitializer() {
 			var holder = new IPHolder(new IPEndPoint(IPAddress.Parse("2001:4860:4801:32::37"), 12345).Serialize());
 			Assert.AreEqual(IPAddress.Parse("2001:4860:4801:32::37"), holder.ToIPAddress());
+		}
+
+		[Test]
+		public void IPv6RandomAddresses() {
+			Random r = new Random(0);
+			for (int i = 0; i < 10000; i++) {
+				StringBuilder addr = new StringBuilder();
+				for (int j = 0; j < 8; j++) {
+					addr.Append(r.Next(0, ushort.MaxValue).ToString("X2"));
+					if (j < 7) addr.Append(":");
+				}
+				string address = addr.ToString();
+				
+				var ip = IPAddress.Parse(address);
+				var holder = new IPHolder(new IPEndPoint(ip, r.Next(0, ushort.MaxValue)).Serialize());
+				Assert.AreEqual(ip, holder.ToIPAddress());
+			}
 		}
 	}
 }
