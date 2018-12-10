@@ -79,7 +79,7 @@ namespace NoGcSockets {
 
 		public override bool Equals(object obj) {
 			MutableIPEndPoint iPEndPoint = obj as MutableIPEndPoint;
-			return socketAddress.Equals(iPEndPoint.socketAddress);
+			return null != iPEndPoint && socketAddress.Equals(iPEndPoint.socketAddress);
 		}
 
 		public override int GetHashCode() {
