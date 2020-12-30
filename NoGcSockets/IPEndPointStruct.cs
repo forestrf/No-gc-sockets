@@ -28,6 +28,9 @@ namespace NoGcSockets {
 			ip = new IPHolder(ep.socketAddress);
 		}
 
+		public IPEndPointStruct(IPEndPoint ipEndPoint) : this(ipEndPoint.Address, (ushort) ipEndPoint.Port) {
+		}
+
 		public IPAddress GetAddress() {
 			return ip.ToIPAddress();
 		}
